@@ -1,8 +1,9 @@
 package usersvc
 
 import (
-	"gin-demo/kafka"
 	"log"
+
+	"github.com/akshay-glide/bivo-utils/kafka"
 
 	"gorm.io/gorm"
 )

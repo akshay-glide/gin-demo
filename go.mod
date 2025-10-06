@@ -3,6 +3,7 @@ module gin-demo
 go 1.23.11
 
 require (
+	github.com/akshay-glide/bivo-utils v0.0.0-20251006153850-74c16180caae
 	github.com/bytedance/sonic v1.14.1
 	github.com/confluentinc/confluent-kafka-go/v2 v2.11.1
 	github.com/gin-contrib/cors v1.7.6
@@ -11,7 +12,6 @@ require (
 	github.com/go-playground/validator/v10 v10.27.0
 	github.com/rs/zerolog v1.34.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
-	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.31.0
 )
 
@@ -54,4 +54,5 @@ require (
 	golang.org/x/text v0.27.0 // indirect
 	golang.org/x/tools v0.34.0 // indirect
 	google.golang.org/protobuf v1.36.9 // indirect
+	gorm.io/driver/postgres v1.6.0 // indirect
 )

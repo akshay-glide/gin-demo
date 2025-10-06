@@ -13,13 +13,15 @@ import (
 	"gin-demo/database"
 	"gin-demo/handlers/healthcheckhdlr"
 	"gin-demo/handlers/userhdlr"
-	"gin-demo/kafka"
 	"gin-demo/middlewares"
 	"gin-demo/server"
 	"gin-demo/services"
 	"gin-demo/services/healthchecksvc"
 	"gin-demo/services/usersvc"
 	"gin-demo/utils"
+
+	"github.com/akshay-glide/bivo-utils/kafka"
+	"github.com/akshay-glide/bivo-utils/postgres"
 )
 
 func main() {
@@ -46,15 +48,14 @@ func main() {
 	utils.AddLoggerFile(logDirPath, "handler.log", hdlrlogger)
 
 	// ########## Database ##########
-	postgresDSN := utils.GetPostgresDSN(serverConfig.PostgresConfig)
+	//postgresDSN := utils.GetPostgresDSN(serverConfig.PostgresConfig)
 
 	// 1. ######## Services ########
-	postgresDbSvcI, err := database.NewPostgresDB(postgresDSN, *serverConfig.PostgresConfig.ConnMaxOpen,
-		*serverConfig.PostgresConfig.ConnMaxIdleTime, *serverConfig.PostgresConfig.ConnMaxIdleConns)
+	postgresDbSvcI, err := postgres.NewPostgresDB(serverConfig.PostgresConfig)
 	if err != nil {
 		apilogger.Fatal("DB instantiation failed")
 	}
-	err = database.AutoMigrateAll(postgresDbSvcI.DB)
+	err = database.AutoMigrateAll(postgresDbSvcI)
 	if err != nil {
 		apilogger.Fatal("DB AutoMigrate failed: ", err)
 	}
@@ -85,7 +86,7 @@ func main() {
 
 	// ########## Services ##########
 	healthCheckSvcI := healthchecksvc.NewHealthCheckSvc()
-	userSvcI := usersvc.NewUserService(postgresDbSvcI.DB, *kafkaProducer, serverConfig.KafkaConfig.Topic, servlogger)
+	userSvcI := usersvc.NewUserService(postgresDbSvcI, *kafkaProducer, serverConfig.KafkaConfig.Topic, servlogger)
 
 	// ########## Handlers ##########
 	healthCheckHdlrI := healthcheckhdlr.NewHealthCheckHdlr(healthCheckSvcI)

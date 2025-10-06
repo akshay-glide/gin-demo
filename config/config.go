@@ -6,9 +6,11 @@ import (
 	"os"
 	"strings"
 
+	"github.com/akshay-glide/bivo-utils/kafka"
+
+	"github.com/akshay-glide/bivo-utils/postgres"
 	"github.com/bytedance/sonic"
 	"github.com/go-playground/validator/v10"
-	"gin-demo/kafka"
 	zlog "github.com/rs/zerolog/log"
 )
 
@@ -40,10 +42,10 @@ type ConfigAPIServer struct {
 }
 
 type ServerConfig struct {
-	ScratchDir      *string          `json:"scratchdir" validate:"required"`
-	APIServerConfig *ConfigAPIServer `json:"apiserver" validate:"required"`
-	PostgresConfig  *ConfigPostgres  `json:"postgres" validate:"required"`
-	KafkaConfig    kafka.KafkaConfig  `json:"kafka" validate:"required"`
+	ScratchDir      *string                  `json:"scratchdir" validate:"required"`
+	APIServerConfig *ConfigAPIServer         `json:"apiserver" validate:"required"`
+	PostgresConfig  *postgres.ConfigPostgres `json:"postgres" validate:"required"`
+	KafkaConfig     kafka.KafkaConfig        `json:"kafka" validate:"required"`
 }
 
 func readFileFullContent(filepath string) ([]byte, error) {
